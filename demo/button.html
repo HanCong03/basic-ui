@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>FUI</title>
+
+    <link rel="stylesheet" type="text/css" href="../theme/fui.all.css">
+
+    <script src="../dev-lib/vash.js"></script>
+    <script src="../dev-lib/jquery-1.11.1.js"></script>
+    <script src="../dev-lib/dev-define.js"></script>
+    <script>
+        inc.config({
+            base: '../src'
+        });
+    </script>
+    <script src="../dev-lib/start.js"></script>
+    <script src="../dev-lib/exports.js"></script>
+    <script src="../dev-lib/dev-start.js"></script>
+    <script>
+        window.onload = function () {
+
+            initCommonButton();
+            initToggleButton();
+
+        };
+
+        function initCommonButton () {
+
+            var panel = new FUI.Panel( {
+                        className: 'hancong'
+                    }),
+                    button = new FUI.Button( {
+//                    disabled: true,
+                        label: '按钮',
+                        text: '清理垃圾',
+//                    width: 20,
+//                    height: 20,
+//                    icon: "demo/assets/icon/clean.png",
+                        icon: {
+                            src: 'assets/icon/clean.png',
+                            width: 28,
+                            height: 28
+                        },
+                        layout: 'right',
+//                    padding: '10px'
+                    } );
+
+            button.render();
+            panel.render();
+
+            panel.appendWidget( button );
+
+            button.on( "click", function ( e ) {
+
+                console.log( 'this: ' + this.widgetName )
+                console.log( 'event: ' + e.type )
+
+//                button.disable();
+
+            } );
+
+            panel.appendTo( $( "#common" )[ 0 ] );
+
+            panel.disable();
+
+            window.setTimeout( function () {
+
+                panel.enable();
+
+            }, 5000 );
+
+        }
+
+        function initToggleButton () {
+
+            var panel = new FUI.Panel(),
+                button = new FUI.ToggleButton( {
+                    disabled: true,
+                    label: 'Linux',
+                    text: '启动Linux',
+                    icon: 'assets/icon/linux.png',
+                    layout: 'right'
+                } );
+
+            button.render();
+            panel.render();
+
+            panel.appendWidget( button );
+
+            panel.appendTo( $( "#toggle" )[ 0 ] );
+
+            button.on( "toggle", function ( e, currentState, oldState ) {
+
+                console.log( this.widgetName + " 发生了 " + e.type + " 事件; 当前按钮" +
+                        ( this.isPressed() ? "已" : "未" ) + "按下!" +
+                        "按钮当前的状态值: "+ currentState);
+
+            } );
+
+            panel.enable();
+
+        }
+
+    </script>
+</head>
+<body>
+    <h1>FUI Button Widget 示例</h1>
+    <h2>通用Button</h2>
+    <div id="common"></div>
+    <h2>可切换Button</h2>
+    <div id="toggle"></div>
+</body>
+</html>
