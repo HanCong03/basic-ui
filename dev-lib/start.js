@@ -11,6 +11,7 @@ define( 'kf.start', function ( require ) {
         Label: require( "widget/label" ),
         Button: require( "widget/button" ),
         ToggleButton: require( "widget/toggle-button" ),
+        Separator: require( "widget/separator" ),
 
         // container widget
         Container: require( "widget/container" ),

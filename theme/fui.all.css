@@ -18,6 +18,8 @@
   font-size: 12px;
   font-family: "ff-tisa-web-pro-1", "ff-tisa-web-pro-2", "Lucida Grande", "Hiragino Sans GB", "Hiragino Sans GB W3", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
   -webkit-font-smoothing: antialiased;
+  display: inline-block;
+  vertical-align: top;
 }
 .fui-widget * {
   -webkit-user-select: none;
@@ -41,6 +43,9 @@
 /*------------ mixin*/
 .fui-container {
   overflow: hidden;
+  position: relative;
+  top: 0;
+  left: 0;
 }
 .fui-container.fui-disabled {
   opacity: 1!important;
@@ -108,6 +113,7 @@
 
 
 .fui-label {
+  cursor: default;
   display: inline-block;
 }
 

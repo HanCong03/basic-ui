@@ -24,6 +24,11 @@ define( function ( require ) {
          */
         __widgets: [],
 
+        __defaultOptions: {
+            // 内容widget之间是否换行
+            break: false
+        },
+
         /**
          * 承载容器构件内容的dom元素
          */
@@ -93,11 +98,21 @@ define( function ( require ) {
             this.__widgets.push( widget );
             widget.appendTo( this.__contentElement );
 
+            if ( this.__options.break ) {
+                $( '<br>' ).appendTo( this.__contentElement );
+            }
+
             return widget;
 
         },
 
         insertWidget: function ( index, widget ) {
+
+            var oldElement = null;
+
+            if ( this.__widgets.length === 0 ) {
+                return this.appendWidget( widget );
+            }
 
             if ( !this.__valid( widget ) ) {
                 return null;
@@ -107,8 +122,14 @@ define( function ( require ) {
                 widget.disable();
             }
 
+            oldElement = this.__widgets[ index ];
+
             this.__widgets.splice( index, 0, widget );
-            this.__contentElement.insertBefore( this.__widgets[ index ].getElement(), widget.getElement() );
+            this.__contentElement.insertBefore( widget.getElement(), oldElement.getElement() );
+
+            if ( this.__options.break ) {
+                $( this.__contentElement ).insertAfter( $( '<br>' ), widget.getElement() );
+            }
 
             return widget;
 
@@ -124,10 +145,14 @@ define( function ( require ) {
                 widget = this.__widgets.splice( widget, 1 );
             } else {
                 this.__widgets.splice( this.indexOf( widget ), 1 );
-
             }
 
             this.__contentElement.removeChild( widget.getElement() );
+
+            if ( this._options.break ) {
+                // TODO 处理break为true时,应删除附加的br
+//                this.__contentElement.removeChild(  );
+            }
 
         },
 

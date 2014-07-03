@@ -40,9 +40,9 @@ define( function ( require ) {
 
         },
 
-        insertWidget: function ( widget ) {
+        insertWidget: function ( index, widget ) {
 
-            var returnValue = this.callBase( widget );
+            var returnValue = this.callBase( index, widget );
 
             if ( this.__options.margin ) {
                 widget.getElement().style.margin = this.__options.margin;

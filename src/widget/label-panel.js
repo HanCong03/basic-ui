@@ -16,7 +16,9 @@ define( function ( require ) {
 
         __defaultOptions: {
             layout: 'bottom',
-            label: null
+            label: {
+                width: '100%'
+            }
         },
 
         __labelWidget: null,
@@ -69,7 +71,8 @@ define( function ( require ) {
 
             if ( typeof label === "string" ) {
                 this.__options.label = {
-                    text: label
+                    text: label,
+                    width: this.__defaultOptions.label.width
                 }
             }
 

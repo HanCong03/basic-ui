@@ -21,16 +21,119 @@
         window.onload = function () {
 
             var toolbar = new FUI.Panel( {
-                className: 'toolbar',
-                width: 1000,
-                height: 100
-            } );
+                    className: 'toolbar',
+                    width: 1000,
+                    height: 100
+                } ),
+
+                undoRedoPanel = new FUI.LabelPanel( {
+                    break: true,
+                    label: '撤销',
+                    height: '100%',
+                    padding: '5px 5px 0 5px'
+                } ),
+
+                clipboardPanel = new FUI.LabelPanel( {
+                    label: '剪贴板',
+                    height: '100%',
+                    padding: '5px 5px 0 5px',
+                    margin: '2px'
+                } );
+
+            var sep1 = new FUI.Separator( {
+                    margin: '5px 3px',
+                    height: '90px'
+                }),
+                sep2 = new FUI.Separator( {
+                    margin: '5px 3px',
+                    height: '90px'
+                } );
 
             toolbar.render();
+            undoRedoPanel.render();
+            clipboardPanel.render();
+
+            sep1.render();
+            sep2.render();
+
+            initUndoRedoWidget( undoRedoPanel );
+            initClipboardWidget( clipboardPanel );
+
+            toolbar.appendWidget( sep1 );
+            toolbar.insertWidget( toolbar.indexOf( sep1 ), undoRedoPanel );
+            toolbar.appendWidget( clipboardPanel );
+            toolbar.appendWidget( sep2 );
 
             toolbar.appendTo( document.body );
 
         };
+
+        function initUndoRedoWidget ( panel ) {
+
+            var undoButton = new FUI.ToggleButton( {
+                    padding: '5px',
+                    icon: 'assets/icon-demo/undo.png',
+                    text: '撤销'
+                } ),
+                redoButton = new FUI.ToggleButton( {
+                    padding: '5px',
+                    icon: 'assets/icon-demo/redo.png',
+                    text: '恢复'
+                } );
+
+            undoButton.render();
+            redoButton.render();
+
+            panel.appendWidget( undoButton );
+            panel.appendWidget( redoButton );
+
+        }
+
+
+        function initClipboardWidget ( panel ) {
+
+            var panel1 = new FUI.Panel(),
+                panel2 = new FUI.Panel( {
+                    break: true
+                } );
+
+            var pasteButton = new FUI.Button( {
+                    padding: '7px',
+                    label: '粘贴',
+                    text: '粘贴',
+                    icon: 'assets/icon-demo/paste.png',
+                    layout: 'bottom'
+                } ),
+                cutButton = new FUI.Button( {
+                    padding: '2px',
+                    label: '剪切',
+                    text: '剪切',
+                    icon: 'assets/icon-demo/cut.png'
+                }),
+                copyButton = new FUI.Button( {
+                    padding: '2px',
+                    label: '复制',
+                    text: '复制',
+                    icon: 'assets/icon-demo/copy.png'
+                } );
+
+            panel1.render();
+            panel2.render();
+
+            pasteButton.render();
+            cutButton.render();
+            copyButton.render();
+
+            panel1.insertWidget( 0, pasteButton );
+
+            panel2.appendWidget( cutButton );
+            panel2.appendWidget( copyButton );
+
+            panel.appendWidget( panel1 );
+            panel.appendWidget( panel2 );
+
+        }
+
     </script>
 </head>
 <body>

@@ -16,7 +16,6 @@ define( function ( require ) {
         __tpl: require( 'tpl/button' ),
 
         __defaultOptions: {
-            className: null,
             label: null,
             text: null,
             icon: null,
