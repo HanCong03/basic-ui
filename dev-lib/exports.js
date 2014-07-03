@@ -2,12 +2,23 @@
  * 模块暴露
  */
 
-( function ( global ) {
+define( 'kf.export', function ( require ) {
 
-    // build环境中才含有use
-    try {
-        use( 'kf.start' );
-    } catch ( e ) {
-    }
+    window.FUI = {
 
-} )( this );
+        Widget: require( "widget/widget" ),
+
+        Label: require( "widget/label" ),
+        Button: require( "widget/button" ),
+        ToggleButton: require( "widget/toggle-button" ),
+        Separator: require( "widget/separator" ),
+
+        // container widget
+        Container: require( "widget/container" ),
+        Panel: require( "widget/panel" ),
+        Buttonset: require( "widget/button-set" ),
+        LabelPanel: require( "widget/label-panel" )
+
+    };
+
+} );

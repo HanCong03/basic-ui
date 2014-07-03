@@ -3,13 +3,17 @@ define( function ( require ) {
     var $ = require( "base/jquery" ),
         extend = require( "base/kit/extend" );
 
-    function createClass ( name, defines ) {
+    /**
+     * 创建一个类
+     * @param className 类名
+     * @param defines 类定义
+     * @returns {*} 根据类定义创建的构造器
+     */
+    function createClass ( className, defines ) {
 
         var constructor = getConstructor( defines );
 
-        constructor = inherit( constructor, defines );
-
-        constructor.__className = name;
+        constructor = inherit( className, constructor, defines );
 
         return constructor;
 
@@ -21,11 +25,12 @@ define( function ( require ) {
 
     }
 
-    function inherit ( clazz, defines ) {
+    function inherit ( className, clazz, defines ) {
 
         var Base = defines.base || ObjectClass,
-            clazzChain = new Base(),
-            baseFields = Base.prototype.__fields,
+            InheritBaseClass = getInheritClass( Base ),
+            clazzChain = new InheritBaseClass(),
+            baseFields = Base.prototype.___fields,
             currentFields = getFields( defines );
 
         for ( var key in clazzChain ) {
@@ -41,7 +46,7 @@ define( function ( require ) {
 
                 // 如果原型链中已经存在同名方法, 则覆盖并记录
                 if ( isFunction( clazzChain[ key ] ) ) {
-                    defines[ key ].__super = clazzChain[ key ];
+                    defines[ key ].___super = clazzChain[ key ];
                 }
 
                 clazzChain[ key ] = defines[ key ];
@@ -52,22 +57,38 @@ define( function ( require ) {
 
         currentFields = extend( {}, baseFields, currentFields );
 
-        clazzChain.__fields = currentFields;
+        clazzChain.___fields = currentFields;
         clazzChain.constructor = clazz;
+        clazzChain.___className = className;
+        clazz.___isConstuctor = true;
+        clazz.___className = className;
 
         clazz.prototype = clazzChain;
         WrapperClass.prototype = clazzChain;
-        WrapperClass.__baseClass = Base;
+        WrapperClass.___baseClass = Base;
+        WrapperClass.___className = className;
 
         function WrapperClass () {
 
-            this.__initField();
-            this.__callBase.apply( this, arguments );
+            this.___callBase.apply( this, arguments );
             clazz.apply( this, arguments );
 
         }
 
         return WrapperClass;
+
+    }
+
+    /**
+     * 获取继承链中的父类的代理类
+     */
+    function getInheritClass ( baseClass ) {
+
+        function InheritBaseClass () {}
+
+        InheritBaseClass.prototype = baseClass.prototype;
+
+        return InheritBaseClass;
 
     }
 
@@ -120,8 +141,8 @@ define( function ( require ) {
 
     /*---------------- 根类定义*/
     function ObjectClass () {
-        this.__initField();
-        this.__callBase();
+        this.___initField();
+        this.___callBase();
     }
 
     $.extend( ObjectClass.prototype, {
@@ -129,16 +150,16 @@ define( function ( require ) {
         /**
          * 不允许访问
          */
-        __fields: {},
+        ___fields: {},
 
         /**
          * 不允许手动调用
          * @private
          */
-        __callBase: function () {
+        ___callBase: function () {
             var constructor = arguments.callee.caller;
-            if ( constructor.__baseClass ) {
-                constructor.__baseClass.apply( this, arguments );
+            if ( constructor.___baseClass ) {
+                constructor.___baseClass.apply( this, arguments );
             }
         },
 
@@ -146,9 +167,9 @@ define( function ( require ) {
          * 不允许手动调用
          * @private
          */
-        __initField: function () {
+        ___initField: function () {
 
-            var fields = this.__fields;
+            var fields = this.___fields;
 
             extend( this, fields );
 
@@ -162,9 +183,24 @@ define( function ( require ) {
 
             var method = arguments.callee.caller;
 
-            if ( method.__super ) {
-                method.__super.apply( this, arguments );
+            if ( method.___super ) {
+                method.___super.apply( this, arguments );
             }
+
+        },
+
+        /**
+         * 判定本次方法调用是否是一次不安全的调用, 如果不安全, 返回true, 否则返回false
+         */
+        isBadCall: function () {
+
+            var originClass = this.___className,
+                // 待验证方法
+                verifyMethod = arguments.callee.caller,
+                // caller
+                caller = verifyMethod.caller;
+
+            return caller.___isConstuctor && originClass !== caller.___className;
 
         }
 
