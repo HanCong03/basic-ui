@@ -35,38 +35,25 @@ define( function ( require ) {
 
                 // 禁止ToggleButton对象注册事件
                 buttonOption.__clickToggle = false;
+                buttonOption.pressed = false;
 
                 buttonWidget = new ToggleButton( buttonOption ).render();
 
                 // 切换
                 buttonWidget.on( 'click', function () {
 
-                    var currentWidget = this;
-
-                    currentWidget.press();
-
-                    // 弹起其他按钮
-                    $.each( _self.__widgets, function ( i, otherWidget ) {
-
-                        if ( otherWidget !== currentWidget ) {
-                            otherWidget.bounce();
-                        }
-
-                    } );
-
-                    _self.__options.__prevSelected = _self.__options.selected;
-                    _self.__options.selected = $.inArray( this, _self.__widgets );
+                    _self.__pressButton( this );
 
                     _self.trigger( 'change', {
-                        currentIndex: _self.__options.selected,
-                        prevIndex: _self.__options.__prevSelected,
-                        currentButton: _self.getButton( _self.__options.selected ),
-                        prevButton: _self.getButton( _self.__options.__prevSelected )
+                        currentIndex: _self.__currentIndex,
+                        prevIndex: _self.__previousIndex,
+                        currentButton: _self.getButton( _self.__currentIndex ),
+                        prevButton: _self.getButton( _self.prevIndex )
                     } );
 
                 } );
 
-                _self.appendWidget( buttonWidget );
+                _self.appendButton( buttonWidget );
 
             } );
 
@@ -88,13 +75,35 @@ define( function ( require ) {
             return this.insertWidget.apply( this, arguments );
         },
 
+        select: function ( indexOrWidget ) {
+
+            if ( this.__options.disabled ) {
+                return this;
+            }
+
+            if ( indexOrWidget instanceof ToggleButton ) {
+                indexOrWidget = $.inArray( indexOrWidget, this.__widgets );
+            }
+
+            if ( indexOrWidget < 0 ) {
+                return this;
+            }
+
+            indexOrWidget = this.__widgets[ indexOrWidget ];
+
+            indexOrWidget.trigger( "click" );
+
+            return this;
+
+        },
+
         removeButton: function () {
             return this.removeWidget.apply( this, arguments );
         },
 
         render: function () {
 
-            if ( this.__options.rendered ) {
+            if ( this.__rendered ) {
                 return this;
             }
 
@@ -113,21 +122,39 @@ define( function ( require ) {
             var selectedWidget = null;
 
 
-            if ( this.__options.selected > 0 ) {
+            if ( this.__options.selected > -1 ) {
                 selectedWidget = this.__widgets[ this.__options.selected ];
             }
 
-            if ( this.__options.disabled ) {
-                this.__options.selected = -1;
-                return;
+            if ( selectedWidget ) {
+                this.__pressButton( selectedWidget );
             }
 
-            if ( selectedWidget ) {
-                selectedWidget.trigger( "click" );
-                this.__options.__prevSelected = -1;
-            } else {
-                this.__options.selected = -1;
-            }
+        },
+
+        /**
+         * 按下指定按钮, 该方法会更新其他按钮的状态和整个button-set的状态
+         * @param button
+         * @private
+         */
+        __pressButton: function ( button ) {
+
+            var _self = this;
+
+            button.press();
+
+            this.__previousIndex = this.__currentIndex;
+
+            // 弹起其他按钮
+            $.each( this.__widgets, function ( i, otherButton ) {
+
+                if ( otherButton !== button ) {
+                    otherButton.bounce();
+                } else {
+                    _self.__currentIndex = i;
+                }
+
+            } );
 
         },
 

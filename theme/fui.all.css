@@ -85,7 +85,7 @@
   color: #000000 !important;
 }
 .fui-button:ACTIVE {
-  background-color: #aec5e6 !important;
+  background-color: #87a9da !important;
   color: #000000 !important;
 }
 .fui-button.fui-disabled:ACTIVE {
@@ -125,5 +125,8 @@
 /*------------ var*/
 /*------------ mixin*/
 .fui-toggle-button.fui-button-pressed {
-  background-color: #c2d3ec;
+  background-color: #aec5e6;
+}
+.fui-toggle-button.fui-button-pressed.fui-disabled {
+  background-color: #aec5e6 !important;
 }

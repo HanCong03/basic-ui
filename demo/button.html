@@ -77,6 +77,7 @@
             var panel = new FUI.Panel(),
                 button = new FUI.ToggleButton( {
                     disabled: true,
+                    pressed: true,
                     label: 'Linux',
                     text: '启动Linux',
                     icon: 'assets/icon/linux.png',
@@ -98,7 +99,9 @@
 
             } );
 
-            panel.enable();
+            console.log( '当前按钮是否已经按下? ' + button.isPressed() );
+
+//            panel.enable();
 
         }
 

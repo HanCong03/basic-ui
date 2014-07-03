@@ -28,6 +28,36 @@ define( function ( require ) {
 
             return styleText.join( ';' );
 
+        },
+
+        // css序列化
+        toCssText: function ( cssMapping ) {
+
+            var rules = [],
+                value = null;
+
+            if ( !cssMapping ) {
+                return '';
+            }
+
+            for ( var key in cssMapping ) {
+
+                if ( !cssMapping.hasOwnProperty( key ) ) {
+                    continue;
+                }
+
+                value = cssMapping[ key ];
+
+                rules.push( key + ': ' + value + ( $.isNumeric( value ) ? 'px' : '' ) );
+
+            }
+
+            if ( rules.length === 0 ) {
+                return '';
+            }
+
+            return 'style="' + rules.join( ";" ) + '"';
+
         }
 
     } );

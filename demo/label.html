@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>FUI</title>
+
+    <link rel="stylesheet" type="text/css" href="../theme/fui.all.css">
+
+    <script src="../dev-lib/vash.js"></script>
+    <script src="../dev-lib/jquery-1.11.1.js"></script>
+    <script src="../dev-lib/dev-define.js"></script>
+    <script>
+        inc.config({
+            base: '../src'
+        });
+    </script>
+    <script src="../dev-lib/start.js"></script>
+    <script src="../dev-lib/exports.js"></script>
+    <script src="../dev-lib/dev-start.js"></script>
+    <script>
+        window.onload = function () {
+
+            var label = new FUI.Label( {
+                content: '初始内容'
+            });
+            label.render();
+
+            label.appendTo( document.body );
+
+            window.setTimeout( function () {
+                label.disable();
+                label.setText( '韩聪你好>' );
+            }, 5000 );
+
+            label.on( "click", function () {
+
+                console.log( 3321 )
+
+            } );
+
+        };
+    </script>
+</head>
+<body>
+    <h1>Label 示例</h1>
+</body>
+</html>

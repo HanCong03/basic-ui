@@ -23,14 +23,16 @@
             var panel = new FUI.Panel(),
                     buttonset= new FUI.Buttonset( {
 //                        disabled: true,
-                        selected: 1,
+                        selected: 0,
                         padding: '5px',
                         margin: '5px',
                         buttons: [ {
                             text: '左对齐',
+                            pressed: true,
                             icon: "assets/icon/align-left.png"
                         }, {
                             text: '居中对齐',
+                            pressed: true,
                             icon: "assets/icon/align-center.png"
                         }, {
                             text: '右对齐',
@@ -62,9 +64,10 @@
 
             window.setTimeout( function () {
 
-                panel.enable();
+//                panel.disable();
+                buttonset.select( 2 );
 
-            }, 5000 );
+            }, 1000 );
 
             window.b = buttonset;
 

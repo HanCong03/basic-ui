@@ -34,7 +34,7 @@ define( function ( require ) {
 
         render: function () {
 
-            if ( this.__options.rendered ) {
+            if ( this.__rendered ) {
                 return this;
             }
 

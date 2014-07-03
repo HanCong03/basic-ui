@@ -14,18 +14,24 @@ define( function ( require ) {
 
         base: require( "widget/button" ),
 
+        // 按钮当前的状态: true->按下, false->未按下
+        __state: false,
+
         __defaultOptions: {
-            // 按钮当前的状态: true->按下, false->未按下
-            state: false,
+
+            // 按钮初始时是否按下
+            pressed: false,
+
             // 是否在click时切换状态
             __clickToggle: true
+
         },
 
         widgetName: 'ToggleButton',
 
         render: function () {
 
-            if ( this.__options.rendered ) {
+            if ( this.__rendered ) {
                 return this;
             }
 
@@ -33,13 +39,20 @@ define( function ( require ) {
 
             $( this.__element ).addClass( CONF.classPrefix + "toggle-button" );
 
-            if ( this.__options.state !== this.__defaultOptions.state ) {
-                this.__updateState();
-            }
-
+            this.__initButtonState();
             this.__initEvent();
 
             return this;
+
+        },
+
+        __initButtonState: function () {
+
+            if ( !this.__options.pressed ) {
+                return;
+            }
+
+            this.press();
 
         },
 
@@ -65,7 +78,7 @@ define( function ( require ) {
          * 当前按钮是否已按下
          */
         isPressed: function () {
-            return this.__options.state;
+            return this.__state;
         },
 
         /**
@@ -90,7 +103,7 @@ define( function ( require ) {
 
         toggle: function () {
 
-            if ( this.__options.state ) {
+            if ( this.__state ) {
                 this.bounce();
             } else {
                 this.press();
@@ -101,7 +114,7 @@ define( function ( require ) {
         __updateState: function ( state ) {
 
             state = !!state;
-            this.__options.state = state;
+            this.__state = state;
             this.trigger( "toggle", state, !state );
 
         }

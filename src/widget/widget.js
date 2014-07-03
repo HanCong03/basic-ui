@@ -28,6 +28,8 @@ define( function ( require ) {
          */
         __compiledTpl: '',
 
+        __rendered: false,
+
         /**
          * 当前构件参数项
          */
@@ -37,8 +39,7 @@ define( function ( require ) {
          * 构件默认参数项
          */
         __defaultOptions: {
-            disabled: false,
-            rendered: false
+            disabled: false
         },
 
         /**
@@ -71,11 +72,11 @@ define( function ( require ) {
 
             var $ele = null;
 
-            if ( this.__options.rendered ) {
+            if ( this.__rendered ) {
                 return this;
             }
 
-            this.__options.rendered = true;
+            this.__rendered = true;
 
             this.__compiledTpl = Utils.Tpl.compile( this.__tpl, this.__options );
             this.__element = $( this.__compiledTpl )[ 0 ];
