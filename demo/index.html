@@ -29,13 +29,16 @@
                 undoRedoPanel = new FUI.LabelPanel( {
                     break: true,
                     label: '撤销',
-                    height: '100%',
                     padding: '5px 5px 0 5px'
                 } ),
 
                 clipboardPanel = new FUI.LabelPanel( {
                     label: '剪贴板',
-                    height: '100%',
+                    padding: '5px 5px 0 5px',
+                    margin: '2px'
+                } ),
+                fontPanel = new FUI.LabelPanel( {
+                    label: '字体',
                     padding: '5px 5px 0 5px',
                     margin: '2px'
                 } );
@@ -47,22 +50,31 @@
                 sep2 = new FUI.Separator( {
                     margin: '5px 3px',
                     height: '90px'
+                } ),
+                sep3 = new FUI.Separator( {
+                    margin: '5px 3px',
+                    height: '90px'
                 } );
 
             toolbar.render();
             undoRedoPanel.render();
             clipboardPanel.render();
+            fontPanel.render();
 
             sep1.render();
             sep2.render();
+            sep3.render();
 
             initUndoRedoWidget( undoRedoPanel );
             initClipboardWidget( clipboardPanel );
+            initFontWidget( fontPanel );
 
             toolbar.appendWidget( sep1 );
             toolbar.insertWidget( toolbar.indexOf( sep1 ), undoRedoPanel );
             toolbar.appendWidget( clipboardPanel );
             toolbar.appendWidget( sep2 );
+            toolbar.appendWidget( fontPanel );
+            toolbar.appendWidget( sep3 );
 
             toolbar.appendTo( document.body );
 
@@ -70,12 +82,13 @@
 
         function initUndoRedoWidget ( panel ) {
 
-            var undoButton = new FUI.ToggleButton( {
+            var undoButton = new FUI.Button( {
+                    disabled: true,
                     padding: '5px',
                     icon: 'assets/icon-demo/undo.png',
                     text: '撤销'
                 } ),
-                redoButton = new FUI.ToggleButton( {
+                redoButton = new FUI.Button( {
                     padding: '5px',
                     icon: 'assets/icon-demo/redo.png',
                     text: '恢复'
@@ -131,6 +144,61 @@
 
             panel.appendWidget( panel1 );
             panel.appendWidget( panel2 );
+
+        }
+
+        function initFontWidget ( panel ) {
+
+            var boldButton = new FUI.ToggleButton( {
+                    padding: '5px',
+                    text: '加粗',
+                    icon: 'assets/icon-demo/bold.png'
+                } ),
+
+                italicButton = new FUI.ToggleButton( {
+                    padding: '5px',
+                    text: '倾斜',
+                    icon: 'assets/icon-demo/italic.png'
+                } ),
+
+                underlineButton = new FUI.ToggleButton( {
+                    padding: '5px',
+                    pressed: true,
+                    text: '下划线',
+                    icon: 'assets/icon-demo/underline.png'
+                } ),
+
+                strikethroughButton = new FUI.ToggleButton( {
+                    padding: '5px',
+                    text: '删除线',
+                    icon: 'assets/icon-demo/strikethrough.png'
+                } ),
+
+                scriptButton = new FUI.Buttonset( {
+                    selected: 0,
+                    margin: '0 2px',
+                    buttons: [ {
+                        text: '上标',
+                        icon: 'assets/icon-demo/superscript.png'
+                    }, {
+                        text: '下标',
+                        // 无效
+                        pressed: true,
+                        icon: 'assets/icon-demo/superscript.png'
+                    } ]
+                } );
+
+            boldButton.render();
+            italicButton.render();
+            underlineButton.render();
+            strikethroughButton.render();
+            scriptButton.render();
+
+            panel.appendWidget( boldButton );
+            panel.appendWidget( italicButton );
+            panel.appendWidget( underlineButton );
+            panel.appendWidget( strikethroughButton );
+            panel.appendWidget( scriptButton );
 
         }
 
