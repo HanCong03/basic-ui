@@ -40,7 +40,11 @@ define( function ( require ) {
 
         },
 
-        render: function () {
+        __render: function () {
+
+            if ( this.isBadCall() ) {
+                return this;
+            }
 
             if ( this.__rendered ) {
                 return this;

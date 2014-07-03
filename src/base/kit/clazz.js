@@ -21,17 +21,36 @@ define( function ( require ) {
 
     function getConstructor ( defines ) {
 
-        return defines.constructor || getDefaultConstructor();
+        return defines.hasOwnProperty( 'constructor' ) ? defines.constructor : getDefaultConstructor();
 
     }
 
     function inherit ( className, clazz, defines ) {
 
-        var Base = defines.base || ObjectClass,
+        var Base = defines.base || getDefaultBaseClass(),
             InheritBaseClass = getInheritClass( Base ),
             clazzChain = new InheritBaseClass(),
             baseFields = Base.prototype.___fields,
             currentFields = getFields( defines );
+
+        // 补上缺省的__render方法
+        if ( !defines.__render ) {
+            defines.__render = function () {
+
+                if ( this.isBadCall() ) {
+                    return this;
+                }
+
+                if ( this.__rendered ) {
+                    return this;
+                }
+
+                this.callBase();
+
+                return this;
+
+            };
+        }
 
         for ( var key in clazzChain ) {
             if ( !isOwnerFunction( key, clazzChain )  ) {
@@ -60,18 +79,24 @@ define( function ( require ) {
         clazzChain.___fields = currentFields;
         clazzChain.constructor = clazz;
         clazzChain.___className = className;
-        clazz.___isConstuctor = true;
-        clazz.___className = className;
 
-        clazz.prototype = clazzChain;
+//        Base.___isConstructor = true;
+//        Base.___className = className;
+
+        WrapperClass.___isConstructor = true;
         WrapperClass.prototype = clazzChain;
         WrapperClass.___baseClass = Base;
         WrapperClass.___className = className;
+
+        clazz.prototype = clazzChain;
+        clazz.___baseClass = Base;
+        clazz.___className = className;
 
         function WrapperClass () {
 
             this.___callBase.apply( this, arguments );
             clazz.apply( this, arguments );
+            this.__render && this.__render();
 
         }
 
@@ -92,13 +117,32 @@ define( function ( require ) {
 
     }
 
+    // 获取默认构造函数, 有别于getDefaultBaseClass
     function getDefaultConstructor () {
 
-        var tmp = function () {};
-        tmp.prototype = new ObjectClass();
-        tmp.constructor = tmp;
+        function DefaultConstructor () {};
+        DefaultConstructor.prototype = ObjectClass.prototype;
+        DefaultConstructor.prototype.constructor = DefaultConstructor;
 
-        return tmp;
+        return DefaultConstructor;
+
+    }
+
+    // 防止根继承时, 获取到同一个构造函数
+    function getDefaultBaseClass () {
+
+        function RootClass () {
+            this.___initField();
+            this.___callBase();
+            this.__render && this.__render();
+        }
+
+        RootClass.prototype = ObjectClass.prototype;
+        RootClass.prototype.constructor = RootClass;
+        RootClass.___isConstructor = true;
+        RootClass.___className = 'RootClass' + ( + new Date() );
+
+        return RootClass;
 
     }
 
@@ -139,10 +183,11 @@ define( function ( require ) {
 
     }
 
-    /*---------------- 根类定义*/
+    /*---------------- 基础类定义*/
     function ObjectClass () {
         this.___initField();
         this.___callBase();
+        this.__render && this.__render();
     }
 
     $.extend( ObjectClass.prototype, {
@@ -200,7 +245,7 @@ define( function ( require ) {
                 // caller
                 caller = verifyMethod.caller;
 
-            return caller.___isConstuctor && originClass !== caller.___className;
+            return caller.___isConstructor && originClass !== caller.___className;
 
         }
 

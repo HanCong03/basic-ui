@@ -80,10 +80,14 @@ define( function ( require ) {
          * 根据模板渲染构件, 如果该构件已经渲染过, 则不会进行二次渲染
          * @returns {Widget}
          */
-        render: function () {
+        __render: function () {
 
             var $ele = null,
                 className = null;
+
+            if ( this.isBadCall() ) {
+                return this;
+            }
 
             if ( this.__rendered ) {
                 return this;

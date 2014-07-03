@@ -39,7 +39,7 @@ define( function ( require ) {
                 buttonOption.__clickToggle = false;
                 buttonOption.pressed = false;
 
-                buttonWidget = new ToggleButton( buttonOption ).render();
+                buttonWidget = new ToggleButton( buttonOption );
 
                 // 切换
                 buttonWidget.__on( 'click', function () {
@@ -103,7 +103,11 @@ define( function ( require ) {
             return this.removeWidget.apply( this, arguments );
         },
 
-        render: function () {
+        __render: function () {
+
+            if ( this.isBadCall() ) {
+                return this;
+            }
 
             if ( this.__rendered ) {
                 return this;

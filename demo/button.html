@@ -45,9 +45,6 @@
 //                    padding: '10px'
                     } );
 
-            button.render();
-            panel.render();
-
             panel.appendWidget( button );
 
             button.on( "click", function ( e ) {
@@ -83,9 +80,6 @@
                     layout: 'right'
                 } );
 
-            button.render();
-            panel.render();
-
             panel.appendWidget( button );
 
             panel.appendTo( $( "#toggle" )[ 0 ] );
@@ -106,7 +100,7 @@
 
             console.log( '当前按钮是否已经按下? ' + button.isPressed() );
 
-//            panel.enable();
+            panel.enable();
 
         }
 

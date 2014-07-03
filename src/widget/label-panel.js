@@ -32,7 +32,11 @@ define( function ( require ) {
 
         },
 
-        render: function () {
+        __render: function () {
+
+            if ( this.isBadCall() ) {
+                return this;
+            }
 
             var oldMargin = this.__options.margin,
                 $contentElement = null;
@@ -44,7 +48,6 @@ define( function ( require ) {
             this.callBase();
 
             $( this.__element ).addClass( CONF.classPrefix + "label-panel" );
-            this.__labelWidget.render();
 
             $contentElement = $( '<div class="fui-label-panel-content"></div>' );
             $( this.__contentElement ).append( $contentElement );

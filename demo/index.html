@@ -55,15 +55,6 @@
                     height: '90px'
                 } );
 
-            toolbar.render();
-            undoRedoPanel.render();
-            clipboardPanel.render();
-            fontPanel.render();
-
-            sep1.render();
-            sep2.render();
-            sep3.render();
-
             initUndoRedoWidget( undoRedoPanel );
             initClipboardWidget( clipboardPanel );
             initFontWidget( fontPanel );
@@ -92,9 +83,6 @@
                     icon: 'assets/icon-demo/redo.png',
                     text: '恢复'
                 } );
-
-            undoButton.render();
-            redoButton.render();
 
             panel.appendWidget( undoButton );
             panel.appendWidget( redoButton );
@@ -128,13 +116,6 @@
                     text: '复制',
                     icon: 'assets/icon-demo/copy.png'
                 } );
-
-            panel1.render();
-            panel2.render();
-
-            pasteButton.render();
-            cutButton.render();
-            copyButton.render();
 
             panel1.insertWidget( 0, pasteButton );
 
@@ -186,12 +167,6 @@
                         icon: 'assets/icon-demo/superscript.png'
                     } ]
                 } );
-
-            boldButton.render();
-            italicButton.render();
-            underlineButton.render();
-            strikethroughButton.render();
-            scriptButton.render();
 
             panel.appendWidget( boldButton );
             panel.appendWidget( italicButton );

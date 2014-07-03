@@ -31,7 +31,11 @@ define( function ( require ) {
 
         widgetName: 'ToggleButton',
 
-        render: function () {
+        __render: function () {
+
+            if ( this.isBadCall() ) {
+                return this;
+            }
 
             if ( this.__rendered ) {
                 return this;

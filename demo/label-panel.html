@@ -30,8 +30,6 @@
                 }
             });
 
-            lPanel.render();
-
             lPanel.appendTo( document.body );
 
             window.setTimeout( function () {
@@ -40,7 +38,7 @@
 
             var button = new FUI.Button( {
                 label: 'red'
-            } ).render();
+            } );
 
             lPanel.appendWidget( button );
 
