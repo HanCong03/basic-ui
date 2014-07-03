@@ -12,14 +12,21 @@ define( function ( require ) {
         base: require( "widget/container" ),
 
         __defaultOptions: {
-            className: null,
-            padding: 0,
+            width: null,
+            height: null,
+            padding: null,
             margin: 0
         },
 
         __tpl: require( "tpl/panel" ),
 
         widgetName: 'Panel',
+
+        constructor: function ( options ) {
+
+            this.__initOptions();
+
+        },
 
         appendWidget: function ( widget ) {
 
@@ -42,6 +49,26 @@ define( function ( require ) {
             }
 
             return returnValue;
+
+        },
+
+        __initOptions: function () {
+
+            var cssMapping = {},
+                options = this.__options,
+                value = null;
+
+            $.each( [ 'width', 'height', 'padding' ], function ( i, item ) {
+
+                value = options[ item ];
+
+                if ( value !== null && value !== undefined ) {
+                    cssMapping[ item ] = value;
+                }
+
+            } );
+
+            options.__css = cssMapping;
 
         }
 

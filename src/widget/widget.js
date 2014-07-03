@@ -39,8 +39,15 @@ define( function ( require ) {
          * 构件默认参数项
          */
         __defaultOptions: {
+            // 自定义的className, 可以是字符串, 也可以是字符串数组
+            className: '',
             disabled: false
         },
+
+        /**
+         * 用户可访问的事件列表
+         */
+        __userEvents: null,
 
         /**
          * 事件控制列表, 列表中出现的事件才会被监听
@@ -62,6 +69,11 @@ define( function ( require ) {
             this.__uid = generatorId();
             this.__options = $.extend( true, {}, this.__defaultOptions, options );
 
+            // 用户可访问的事件默认和__events一致
+            if ( this.__userEvents === null ) {
+                this.__userEvents = $.extend( [], this.__events );
+            }
+
         },
 
         /**
@@ -70,7 +82,8 @@ define( function ( require ) {
          */
         render: function () {
 
-            var $ele = null;
+            var $ele = null,
+                className = null;
 
             if ( this.__rendered ) {
                 return this;
@@ -88,6 +101,16 @@ define( function ( require ) {
             }
 
             $ele.addClass( CONF.classPrefix + "widget" );
+
+            // add custom class-name
+            className = this.__options.className;
+            if ( className.length > 0 ) {
+                if ( $.isArray( className ) ) {
+                    $ele.addClass( className.join( " " ) );
+                } else {
+                    $ele.addClass( className );
+                }
+            }
 
             this.__delegate();
 
@@ -151,6 +174,39 @@ define( function ( require ) {
 
         on: function ( type, cb ) {
 
+            if ( $.inArray( type, this.__userEvents ) < 0 ) {
+                return this;
+            }
+
+            return this.__on.apply( this, arguments );
+
+        },
+
+        off: function ( type, cb ) {
+
+            $( this.__element ).off( CONF.eventPrefix + type, cb && cb.__fui_listener );
+
+            return this;
+
+        },
+
+        trigger: function ( type, params ) {
+
+            if ( $.inArray( type, this.__userEvents ) < 0 ) {
+                return this;
+            }
+
+            return this.__trigger.apply( this, arguments );
+
+        },
+
+        /**
+         * on的私有实现, 该方法不会对trigger列表做检查
+         * 该方法要配合__trigger方法使用
+         * @private
+         */
+        __on: function ( type, cb ) {
+
             var _self = this;
 
             cb.__fui_listener = function ( e ) {
@@ -166,15 +222,16 @@ define( function ( require ) {
 
             $( this.__element ).on( CONF.eventPrefix + type, cb.__fui_listener );
 
-        },
-
-        off: function ( type, cb ) {
-
-            $( this.__element ).off( CONF.eventPrefix + type, cb && cb.__fui_listener )
+            return this;
 
         },
 
-        trigger: function ( type, params ) {
+        /**
+         * 私有trigger, 实现widget才可调用该方法.
+         * 该方法的作用同trigger一样, 都是trigger事件, 但是该方法不限制trigger类型
+         * @private
+         */
+        __trigger: function ( type, params ) {
 
             var eventList = $._data( this.__element, "events" );
 
@@ -184,6 +241,7 @@ define( function ( require ) {
                 $( this.__element ).trigger( type, [].slice.call( arguments, 1 ) );
             }
 
+            return this;
 
         },
 
@@ -198,7 +256,7 @@ define( function ( require ) {
             $( this.__element ).on( this.__events.join( " " ), function ( e ) {
 
                 e.stopPropagation();
-                _self.trigger( e.type );
+                _self.__trigger( e.type );
 
             } );
 

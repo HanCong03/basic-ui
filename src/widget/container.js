@@ -14,6 +14,9 @@ define( function ( require ) {
 
         base: Widget,
 
+        // 不监听事件
+        _events: [],
+
         __widgetType: 'container',
 
         /**

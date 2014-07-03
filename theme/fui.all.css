@@ -13,6 +13,11 @@
   -ms-user-select: none;
   user-select: none;
   -webkit-user-drag: none;
+  color: #000000;
+  line-height: 1.5;
+  font-size: 12px;
+  font-family: "ff-tisa-web-pro-1", "ff-tisa-web-pro-2", "Lucida Grande", "Hiragino Sans GB", "Hiragino Sans GB W3", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
+  -webkit-font-smoothing: antialiased;
 }
 .fui-widget * {
   -webkit-user-select: none;
@@ -34,6 +39,9 @@
  */
 /*------------ var*/
 /*------------ mixin*/
+.fui-container {
+  overflow: hidden;
+}
 .fui-container.fui-disabled {
   opacity: 1!important;
 }
@@ -48,11 +56,6 @@
 /*------------ mixin*/
 .fui-button {
   vertical-align: top;
-  color: #000000;
-  line-height: 1.5;
-  font-size: 12px;
-  font-family: "ff-tisa-web-pro-1", "ff-tisa-web-pro-2", "Lucida Grande", "Hiragino Sans GB", "Hiragino Sans GB W3", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
-  -webkit-font-smoothing: antialiased;
   display: inline-block;
   overflow: hidden;
   text-align: center;
@@ -102,6 +105,11 @@
  */
 /*------------ var*/
 /*------------ mixin*/
+
+
+.fui-label {
+  display: inline-block;
+}
 
 /**
  * 通用button

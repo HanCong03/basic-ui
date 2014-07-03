@@ -62,7 +62,7 @@
 
             panel.appendTo( $( "#common" )[ 0 ] );
 
-            panel.disable();
+//            panel.disable();
 
             window.setTimeout( function () {
 
@@ -91,11 +91,17 @@
 
             panel.appendTo( $( "#toggle" )[ 0 ] );
 
-            button.on( "toggle", function ( e, currentState, oldState ) {
+            button.on( "change", function ( e, currentState, oldState ) {
 
                 console.log( this.widgetName + " 发生了 " + e.type + " 事件; 当前按钮" +
                         ( this.isPressed() ? "已" : "未" ) + "按下!" +
                         "按钮当前的状态值: "+ currentState);
+
+            } );
+
+            button.on( "click", function () {
+
+                console.log('dianji')
 
             } );
 

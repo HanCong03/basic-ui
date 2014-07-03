@@ -13,13 +13,17 @@ define( function ( require ) {
 
         __tpl: require( "tpl/label" ),
 
+        __userEvents: [ "change" ],
+
         __defaultOptions: {
-            content: '',
+            text: '',
             width: null,
             height: null,
             padding: null,
-            textAlgin: 'center'
+            textAlign: 'center'
         },
+
+        widgetName: 'Label',
 
         constructor: function () {
 
@@ -29,15 +33,22 @@ define( function ( require ) {
 
         setText: function ( text ) {
 
-            this.__options.content = text;
+            var oldtext = this.__options.text;
+
+            this.__options.text = text;
             $( this.__element ).text( text );
+
+            this.trigger( "change", {
+                currentText: text,
+                prevText: oldtext
+            } );
 
             return this;
 
         },
 
         getText: function () {
-            return this.__options.content;
+            return this.__options.text;
         },
 
         /**
@@ -50,9 +61,13 @@ define( function ( require ) {
                 options = this.__options,
                 value = null;
 
-            $.each( [ 'width', 'height', 'padding' ], function ( i, item ) {
+            $.each( [ 'width', 'height', 'padding', 'textAlign' ], function ( i, item ) {
 
                 value = options[ item ];
+
+                if ( item === "textAlign" ) {
+                    item = 'text-align';
+                }
 
                 if ( value !== null && value !== undefined ) {
                     cssMapping[ item ] = value;

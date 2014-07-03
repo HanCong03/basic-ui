@@ -27,6 +27,8 @@ define( function ( require ) {
 
         },
 
+        __userEvents: [ 'change' ],
+
         widgetName: 'ToggleButton',
 
         render: function () {
@@ -66,7 +68,7 @@ define( function ( require ) {
                 return;
             }
 
-            this.on( "click", function () {
+            this.__on( "click", function () {
 
                 this.toggle();
 
@@ -115,7 +117,7 @@ define( function ( require ) {
 
             state = !!state;
             this.__state = state;
-            this.trigger( "toggle", state, !state );
+            this.trigger( "change", state, !state );
 
         }
 

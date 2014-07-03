@@ -16,7 +16,7 @@ define( function ( require ) {
         widgetName: 'Buttonset',
 
         // 前一次选中项
-        __previousIndex: -1,
+        __prevIndex: -1,
 
         // 当前选中项
         __currentIndex: -1,
@@ -25,6 +25,8 @@ define( function ( require ) {
             // 初始选中项, -1表示不选中任何项
             selected: -1
         },
+
+        __userEvents: [ "change" ],
 
         __initButtons: function () {
 
@@ -40,15 +42,15 @@ define( function ( require ) {
                 buttonWidget = new ToggleButton( buttonOption ).render();
 
                 // 切换
-                buttonWidget.on( 'click', function () {
+                buttonWidget.__on( 'click', function () {
 
                     _self.__pressButton( this );
 
                     _self.trigger( 'change', {
                         currentIndex: _self.__currentIndex,
-                        prevIndex: _self.__previousIndex,
+                        prevIndex: _self.__prevIndex,
                         currentButton: _self.getButton( _self.__currentIndex ),
-                        prevButton: _self.getButton( _self.prevIndex )
+                        prevButton: _self.getButton( _self.__prevIndex )
                     } );
 
                 } );
@@ -143,7 +145,7 @@ define( function ( require ) {
 
             button.press();
 
-            this.__previousIndex = this.__currentIndex;
+            this.__prevIndex = this.__currentIndex;
 
             // 弹起其他按钮
             $.each( this.__widgets, function ( i, otherButton ) {
