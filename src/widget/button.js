@@ -7,6 +7,8 @@ define( function ( require ) {
 
     var prefix = '_fui_',
         $ = require( "base/jquery" ),
+        Icon = require( "widget/icon" ),
+        Label = require( "widget/label" ),
         Utils = require( "base/utils" );
 
     return require( "base/utils" ).Clazz.createClass( "Button", {
@@ -23,14 +25,26 @@ define( function ( require ) {
             layout: 'right',
             width: null,
             height: null,
-            padding: '2px'
+            padding: null
         },
+
+        // 组合对象: icon
+        __iconWidget: null,
+
+        // 组合对象: label
+        __labelWidget: null,
 
         widgetName: 'Button',
 
         constructor: function ( options ) {
 
-            this.__initOptions();
+            if ( this.__options.label ) {
+                this.__labelWidget = new Label( this.__options.label );
+            }
+
+            if ( this.__options.icon ) {
+                this.__iconWidget = new Icon( this.__options.icon );
+            }
 
         },
 

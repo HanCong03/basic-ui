@@ -19,29 +19,37 @@
     <script>
         window.onload = function () {
 
-            var label = new FUI.Label( {
-                text: '初始内容'
+            var icon = new FUI.Icon( {
+                img: 'assets/icon/clean.png',
+                className: 'my-icon'
+            }),
+            icon2 = new FUI.Icon( {
+                className: 'my-icon'
             });
 
-            label.appendTo( document.body );
+            icon.appendTo( document.body );
+            icon2.appendTo( document.body );
 
-            window.setTimeout( function () {
-//                label.disable();
-                label.setText( '韩聪你好>' );
-            }, 1000 );
+            icon2.on( "click", function () {
 
-            console.log( "当前的内容是: " + label.getText() )
-
-            label.on( "change", function ( e, info ) {
-
-                console.log( this.widgetName + " 发生了 " + e.type + " 事件, 其内容由 '" + info.prevText + "' 改变成 '" + info.currentText + "'" );
+                console.log(33321)
 
             } );
 
         };
     </script>
+    <style type="text/css">
+
+        .my-icon {
+            width: 100px;
+            height: 100px;
+            background: url( "assets/icon/linux.png" ) no-repeat 20px 20px white;
+        }
+
+    </style>
 </head>
 <body>
-    <h1>Label 示例</h1>
+    <h1>Icon 示例</h1>
+<div class="test"></div>
 </body>
 </html>

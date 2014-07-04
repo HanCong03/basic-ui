@@ -13,6 +13,8 @@ define( 'kf.export', function ( require ) {
         ToggleButton: require( "widget/toggle-button" ),
         Separator: require( "widget/separator" ),
 
+        Icon: require( "widget/icon" ),
+
         // container widget
         Container: require( "widget/container" ),
         Panel: require( "widget/panel" ),

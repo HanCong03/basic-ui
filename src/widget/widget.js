@@ -47,7 +47,7 @@ define( function ( require ) {
         /**
          * 用户可访问的事件列表
          */
-        __userEvents: null,
+        __userEvents: undefined,
 
         /**
          * 事件控制列表, 列表中出现的事件才会被监听
@@ -70,7 +70,7 @@ define( function ( require ) {
             this.__options = $.extend( true, {}, this.__defaultOptions, options );
 
             // 用户可访问的事件默认和__events一致
-            if ( this.__userEvents === null ) {
+            if ( this.__userEvents === undefined ) {
                 this.__userEvents = $.extend( [], this.__events );
             }
 
@@ -178,7 +178,7 @@ define( function ( require ) {
 
         on: function ( type, cb ) {
 
-            if ( $.inArray( type, this.__userEvents ) < 0 ) {
+            if ( !this.__userEvents || $.inArray( type, this.__userEvents ) < 0 ) {
                 return this;
             }
 
